@@ -20,8 +20,8 @@ typedef struct action {
 #define A_START         32
 #define A_TOP           33
 
-#define B_LEFT		1
-#define B_RIGHT		2
+#define B_NW		1
+#define B_NE		2
 
 static action_t action_array[] = {
   /* move out of park */
@@ -195,6 +195,7 @@ static action_t action_array[] = {
 static int ended = 0;
 static unsigned long start_time;
 static int index = 0;
+static int bonusBox = 0;
 
 void setup() {
   int inChar;
@@ -235,7 +236,7 @@ void loop() {
   while (action_array[index].target != A_END && ended == 0) {
     switch (action_array[index].target) {
       case A_BONUS:
-          bonus(B_LEFT);
+          bonus();
           break;
       case A_DELAY:
           delay(action_array[index].pos);
@@ -367,26 +368,33 @@ void grab(int item) {
   wait();
 }
 
-void bonus(int loc) {
-  if (loc == B_LEFT) {
+void bonus() {
+  set_target(1, 6208);
+  set_target(2, 4000);
+  set_target(3, 3700);
+  set_target(4, 7700);
+  set_target(0, 7584);
+  wait();
+  adjust_speed(1);
+
+  if (bonusBox == B_NW) {
 		// bring to bonus box left
-    set_target(1, 6060);
-    adjust_speed(1);
-    set_target(2, 5114); // 5184
-    set_target(0, 7584);
+    set_target(0, 8540); // 8524, 8496
     wait();
-    set_target(3, 3700);
-    set_target(4, 7700);
-    set_target(0, 8566); // 8524, 8496
-    wait();
-    set_target(1, 5068); // 4968
-    release();
-    adjust_speed(2);
-    set_target(1, 6060);
-    wait();
+    set_target(2, 5112); // 5184
+    set_target(1, 5092); // 4968
   }
-  else if (loc == B_RIGHT) {
+  else if (loc == B_NE) {
+    set_target(0, 6840);
+    wait();
+    set_target(2, 5112);
+    set_target(1, 5100);
   }
+
+  release();
+  adjust_speed(2);
+  set_target(1, 6060);
+  delay(250);
 }
 
 void east() {
@@ -408,17 +416,19 @@ void east() {
 
 void north() {
                 // bring to North Box
-  set_target(1, 6060);
-  set_target(2, 6660);
+  set_target(1, 6208);
+  set_target(2, 4000);
   wait();
-  set_target(3, 2704);
-  set_target(4, 7700);
   set_target(0, 7680); // 7624
+  set_target(3, 2704);
+  set_target(4, 6400);
   wait();
-  set_target(1, 5168); // 5028
+  set_target(2, 6620)
+  set_target(1, 5248); // 5028
   release();
   set_target(1, 6060);
   set_target(2, 6400);
+  set_target(4, 7700);
   delay(250);
 }
 
@@ -441,6 +451,18 @@ void west() {
 
 void startup() {
   int inChar;
+
+               // Where is the bonus box?
+  do { 
+    inChar = readInput("Where is the bonus box? (East (`e') or West (`w')? ");
+  } while (inChar != 69 && inChar != 87 && inChar != 101 && inChar != 119);
+
+  if (inChar == 69 || inChar == 101) {
+    bonusBox = B_NE;
+  }
+  else  {
+    bonusBox == B_NW;
+  }
                // bring the robot into the start position
   set_target(0, 7504);
   set_target(1, 6200);
