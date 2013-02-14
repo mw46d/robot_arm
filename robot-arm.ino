@@ -29,37 +29,40 @@ static action_t action_array[] = {
   { A_WAIT, 0 },
   
   { A_SPEED, 2 },
+
   // Move to the start position
   { A_START, 0 },
-/*
+
   // Drop the helper ring
-  { 0, 7400 }, { 2, 7300 }, { 3, 5908 }, { 1, 5160 }, { A_WAIT, 0 },
-  { A_RELEASE, 0 }, { A_SPEED, 2 },
+  { 0, 7400 }, { 2, 7300 }, { 3, 5908 }, { 1, 5180 },
+  { A_RELEASE, 0 }, { A_SPEED, 2 }, 
+  { 1, 6060 }, { A_WAIT, 0 },
   
   // 1. TT Ball
   { 1, 6060 }, { 0, 8480 }, { 2, 8140 }, { 3, 5424 }, { A_WAIT, 0 },
-  { 1, 5648 }, { A_WAIT, 0 },
+  { 1, 5668 }, { A_WAIT, 0 },
   { A_GRAB, 4 }, { A_WEST, 0 }, { A_RELEASE, 0 },
   
   // 2. TT Ball
   { 1, 6060 }, {0, 7912 }, { 2, 8384 }, { 3, 5424 }, { A_WAIT, 0 },
-  { 1, 5760 }, { A_WAIT, 0 },
+  { 1, 5780 }, { A_WAIT, 0 },
   { A_GRAB, 4 }, { A_NORTH, 0 }, { A_RELEASE, 0 },
   
   // 3. TT Ball
   { 1, 6060 }, {0, 7200 }, { 2, 8384 }, { 3, 5424 }, { A_WAIT, 0 },
-  { 1, 5784 }, { A_WAIT, 0 },
+  { 1, 5804 }, { A_WAIT, 0 },
   { A_GRAB, 4 }, { A_EAST, 0 }, { A_RELEASE, 0 },
   
   // 4. TT Ball
   { 1, 6060 }, {0, 6712 }, { 2, 8140 }, { 3, 5424 }, { A_WAIT, 0 },
-  { 1, 5648 }, { A_WAIT, 0 },
+  { 1, 5668 }, { A_WAIT, 0 },
   { A_GRAB, 4 },
   
   // Helper position
   { 1, 6060 }, {0, 7504 }, { 2, 7120 }, { 3, 5424 }, { A_WAIT, 0 },
-  { 1, 5040 }, { A_WAIT, 0 },
+  { 1, 5060 }, { A_WAIT, 0 },
   { A_RELEASE, 0 },
+  { 1, 6060 }, { A_WAIT, 0 },
   
   // 3 nail
   // position
@@ -84,7 +87,7 @@ static action_t action_array[] = {
   { 1, 5608 }, { A_WAIT, 0 },
 
   { A_GRAB, 3 }, { A_SPEED, 1 }, { A_BONUS, 0 }, { A_RELEASE, 0}, { A_SPEED, 2 },
-*/
+
   // 1 nail
   // position
   { 1, 6060 }, { 2, 7000 }, { A_DELAY, 250 },
@@ -171,7 +174,7 @@ static action_t action_array[] = {
   { 0, 5700 }, { 2, 8384 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 }, { A_WAIT, 0 },
   { 1, 5588 }, { A_WAIT, 0 },
 
-  { A_GRAB, 3 }, { A_WEST, 0 }, { A_RELEASE, 0},
+  { A_GRAB, 3 }, { A_WEST, 0 }, { A_RELEASE, 0 },
 
   // 4 pipe
   // position
@@ -193,7 +196,7 @@ static action_t action_array[] = {
   
   // Helper position - take TT ball
   { 1, 6060 }, {0, 7504 }, { 2, 7120 }, { 3, 5424 }, { A_WAIT, 0 },
-  { 1, 5040 }, { A_WAIT, 0 },
+  { 1, 5060 }, { A_WAIT, 0 },
   { A_GRAB, 4 },
 
   { A_TOP, 0 },
@@ -201,6 +204,7 @@ static action_t action_array[] = {
   
   { A_RELEASE, 0 },
   { 2, 8000 }, { 1, 6060 }, { A_DELAY, 250 },
+  
   { A_PARK, 0},
   
   { A_END, 0 },
@@ -211,10 +215,10 @@ static unsigned long start_time;
 static int index = 0;
 
 void setup() {
-  pinMode(7, OUTPUT);
-  pinMode(7, HIGH);
+  pinMode(7,OUTPUT);
+  pinMode(7,HIGH);
   delay(500);
-  pinMode(7, LOW);
+  pinMode(7,LOW);
   
   Serial.begin(115200);
   Serial1.begin(115200);
@@ -334,7 +338,7 @@ void wait() {
   delay(250);
   Serial.print("Waited ");
   Serial.println(millis() - start_time);
-  readInput("Enter a char to continue");
+//  readInput("Enter a char to continue");
 }
 
 void park() {
@@ -361,13 +365,13 @@ void grab(int item) {
   
   switch (item) {
     case 1:	// nail
-	set_target(5, 3040);
+	set_target(5, 3040); // 2140
         break;
     case 2:	// pencil
-	set_target(5, 3550);
+	set_target(5, 3550); // 2300
         break;
     case 3:	// pipe
-        set_target(5, 4850);
+        set_target(5, 4850); // 4400
         break;
     case 4:	// TT ball
         set_target(5, 3300);
@@ -439,11 +443,12 @@ void startup() {
   set_target(1, 6200);
   set_target(2, 2440);
   set_target(3, 4400);
+  set_target(5, 6592);
   wait();
   
-  readInput("Enter a char to grab the little helper ring");
+  readInput("Enter a char to grab helper");
   grab(1);
-  readInput("============= Enter a char to start the run!!! =====================");
+  readInput("=== Enter a char to start! ===");
   start_time = millis();
 }
 
@@ -455,7 +460,7 @@ void top() {
   set_target(3, 4400);
   wait();
   
-  Serial.println("======================== Done!! =========================");
+  Serial.println("=== Done! ===");
   Serial.print("time taken= ");
   Serial.println(millis() - start_time);
   
@@ -513,7 +518,12 @@ void readInput(const char *str) {
     return;
   }
   
-  Serial.println("test");
+  if (str != NULL) {
+    Serial.println(str);
+  }
+  else {
+    Serial.println("Enter a Char: ");
+  }
 
   while (Serial.available() == 0) {
     delay(100);
@@ -529,7 +539,7 @@ void readInput(const char *str) {
   }
   
   if (incomingByte == 80 || incomingByte == 112) {
-    park();
     ended = 1;
+    park();
   }
 }
