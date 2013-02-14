@@ -34,98 +34,98 @@ static action_t action_array[] = {
   { A_START, 0 },
 
   // Drop the helper ring
-  { 0, 7400 }, { 2, 7300 }, { 3, 5908 }, { 1, 5180 },
+  { 0, 7400 }, { 2, 7300 }, { 3, 5908 }, { A_WAIT, 0 },
+  { 1, 5200 },
   { A_RELEASE, 0 }, { A_SPEED, 2 }, 
   { 1, 6060 }, { A_WAIT, 0 },
   
   // 1. TT Ball
   { 1, 6060 }, { 0, 8480 }, { 2, 8140 }, { 3, 5424 }, { A_WAIT, 0 },
-  { 1, 5668 }, { A_WAIT, 0 },
+  { 1, 5668 },
   { A_GRAB, 4 }, { A_WEST, 0 }, { A_RELEASE, 0 },
   
   // 2. TT Ball
-  { 1, 6060 }, {0, 7912 }, { 2, 8384 }, { 3, 5424 }, { A_WAIT, 0 },
-  { 1, 5780 }, { A_WAIT, 0 },
+  { 1, 6060 }, { A_WAIT, 0 },
+  { 0, 7912 }, { 2, 8384 }, { 3, 5424 }, { A_WAIT, 0 },
+  { 1, 5780 },
   { A_GRAB, 4 }, { A_NORTH, 0 }, { A_RELEASE, 0 },
   
   // 3. TT Ball
-  { 1, 6060 }, {0, 7200 }, { 2, 8384 }, { 3, 5424 }, { A_WAIT, 0 },
-  { 1, 5804 }, { A_WAIT, 0 },
+  { 1, 6060 }, { A_WAIT, 0 },
+  { 0, 7200 }, { 2, 8384 }, { 3, 5424 }, { A_WAIT, 0 },
+  { 1, 5804 },
   { A_GRAB, 4 }, { A_EAST, 0 }, { A_RELEASE, 0 },
   
   // 4. TT Ball
-  { 1, 6060 }, {0, 6712 }, { 2, 8140 }, { 3, 5424 }, { A_WAIT, 0 },
-  { 1, 5668 }, { A_WAIT, 0 },
+  { 1, 6060 }, { A_WAIT, 0 },
+  { 0, 6712 }, { 2, 8140 }, { 3, 5424 }, { A_WAIT, 0 },
+  { 1, 5668 },
   { A_GRAB, 4 },
   
   // Helper position
   { 1, 6060 }, {0, 7504 }, { 2, 7120 }, { 3, 5424 }, { A_WAIT, 0 },
-  { 1, 5060 }, { A_WAIT, 0 },
+  { 1, 5060 },
   { A_RELEASE, 0 },
   { 1, 6060 }, { A_WAIT, 0 },
   
   // 3 nail
   // position
   { 1, 6060 }, { 0, 7584 }, { 2, 8384 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 }, { A_WAIT, 0 },
-  { 1, 5560 }, { A_WAIT, 0 },
-  
-  { A_GRAB, 1 }, { A_SPEED, 1 }, { A_BONUS, 0 }, { A_RELEASE, 0 }, { A_SPEED, 2 }, 
+  { 1, 5560 },
+  { A_GRAB, 1 }, { A_BONUS, 0 }, 
   
   // 3 pencil
   // position
   { 1, 6060 }, { 2, 7000 }, { A_DELAY, 250 },
   { 0, 9868 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 }, { A_WAIT, 0 },
-  { 2, 8384 }, { 1, 5608 }, { A_WAIT, 0 },
-
-  { A_GRAB, 2 }, { A_SPEED, 1}, { A_BONUS, 0 }, { A_RELEASE, 0}, { A_SPEED, 2 },
+  { 2, 8384 }, { A_DELAY, 250 },
+  { 1, 5608 },
+  { A_GRAB, 2 }, { 1, 6060 }, { 2, 7000 }, { A_DELAY, 250 },
+  { A_BONUS, 0 },
   
   // 3 pipe
   // position
   { 1, 6060 }, { 2, 7000 }, { A_DELAY, 250 },
   { 0, 5188 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 }, { A_WAIT, 0 },
   { 2, 8384 }, { A_WAIT, 0 },
-  { 1, 5608 }, { A_WAIT, 0 },
-
-  { A_GRAB, 3 }, { A_SPEED, 1 }, { A_BONUS, 0 }, { A_RELEASE, 0}, { A_SPEED, 2 },
+  { 1, 5608 },
+  { A_GRAB, 3 }, { 1, 6060 }, { 2, 7000 }, { A_DELAY, 250 },
+  { A_BONUS, 0 }, 
 
   // 1 nail
   // position
   { 1, 6060 }, { 2, 7000 }, { A_DELAY, 250 },
   { 0, 8610 }, { 2, 8048 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 }, { A_WAIT, 0 },
-  { 1, 5368 }, { A_WAIT, 0 },
-
+  { 1, 5368 },
   { A_GRAB, 1 }, { A_EAST, 0 }, { A_RELEASE, 0},
   
   // 2 nail
   // position
   { 1, 6060 }, { 2, 6680 }, { A_DELAY, 250 },
   { 0, 8140 }, { 2, 8384 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 }, { A_WAIT, 0 },
-  { 1, 5560 }, { A_WAIT, 0 },
-
+  { 1, 5560 },
   { A_GRAB, 1 }, { A_EAST, 0 }, { A_RELEASE, 0},
   
   // 4 nail
   // position
   { 1, 6060 }, { 2, 6680 }, { A_DELAY, 250 },
   { 0, 6984 }, { 3, 5424 }, { 4, 7700 }, { 2, 8384 }, { 5, 6592 }, { A_WAIT, 0 },
-  { 1, 5560 }, { A_WAIT, 0 },
-
+  { 1, 5560 },
   { A_GRAB, 1 }, { A_EAST, 0 }, { A_RELEASE, 0},
   
   // 5 nail
   // position
   { 1, 6060 }, { 2, 6680 }, { A_DELAY, 250 },
   { 0, 6664 }, { 3, 5424 }, { 4, 7700 }, { 2, 8048 }, { 5, 6592 }, { A_WAIT, 0 },
-  { 1, 5288 }, { A_WAIT, 0 },
-
+  { 1, 5288 },
   { A_GRAB, 1 }, { A_EAST, 0 }, { A_RELEASE, 0},
 
   // 1 pencil
   // position
   { 1, 6060 }, { 2, 6680 }, { A_DELAY, 250 },
-  { 0, 10700 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 }, { A_WAIT, 0 },
-  { 2, 8048 }, { 1, 5408 }, { A_WAIT, 0 },
-
+  { 0, 10700 }, { 3, 5424 }, { 4, 7000 }, { 5, 6592 }, { A_WAIT, 0 },
+  { 2, 8048 }, { 1, 5408 },
+  // turn the wrist?? (2nd, 1:43)
   { A_GRAB, 2 }, { A_NORTH, 0 }, { A_RELEASE, 0},
 
   // 2 pencil
@@ -133,27 +133,24 @@ static action_t action_array[] = {
   { 1, 6060 }, { 2, 6680 }, { A_DELAY, 250 },
   { 0, 10320 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 }, { A_WAIT, 0 },
   { 2, 8384 }, { A_WAIT, 0 },
-  { 1, 5540 }, { A_WAIT, 0 },
-
+  { 1, 5540 },
   { A_GRAB, 2 }, { A_NORTH, 0 }, { A_RELEASE, 0},
 
   // 4 pencil
   // position
   { 1, 6060 }, { 2, 6680 }, { A_DELAY, 250 },
-  { 0, 9500 }, { 3, 5424 }, { 4, 7000 }, { 5, 6592 }, { A_WAIT, 0 },
+  { 0, 9700 }, { 3, 5424 }, { 4, 7000 }, { 5, 6592 }, { A_WAIT, 0 },
   { 2, 8384 }, { 0, 9368 }, { A_WAIT, 0 },
-  { 1, 5608 }, { A_WAIT, 0 },
-
+  { 1, 5608 },
   { A_GRAB, 2 },
-  { 4, 6000 }, { 1, 6060 }, { 0, 8500 }, { A_WAIT, 0 },
+  { 4, 2500 }, { 1, 6060 }, { 2, 6680 }, { 0, 9700 }, { A_WAIT, 0 },
   { A_NORTH, 0 }, { A_RELEASE, 0},
 
   // 5 pencil
   // position
   { 1, 6060 }, { 2, 8048 }, { 3, 5424 }, { A_WAIT, 0 },
   { 0, 9120 }, { 4, 6200 }, { 5, 6592 }, { A_WAIT, 0 },
-  { 1, 5408 }, { A_WAIT, 0 },
-
+  { 1, 5408 },
   { A_GRAB, 2 },
   { 4, 2500 }, { 0, 9500 }, { 1, 5800 }, { A_WAIT, 0 },
   { A_NORTH, 0 }, { A_RELEASE, 0},
@@ -162,18 +159,17 @@ static action_t action_array[] = {
   // position
   { 1, 6060 }, { 2, 8048 }, { A_DELAY, 250 },
   { 0, 6088 }, { 3, 5424 }, { 4, 8000 }, { 5, 6592 }, { A_WAIT, 0 },
-  { 1, 5248 }, { A_WAIT, 0 },
-
+  { 1, 5248 },
   { A_GRAB, 3 },
-  { 4, 4000 }, { 1, 6060 }, { 0, 7000}, { A_WAIT, 0 },
+  { 1, 6060 }, { A_WAIT, 0 },
+  { 4, 4000 }, { 0, 7000}, { A_WAIT, 0 },
   { A_WEST, 0 }, { A_RELEASE, 0},
 
   // 2 pipe
   // position
   { 2, 8000 }, { 1, 6060 }, { A_DELAY, 250 },
   { 0, 5700 }, { 2, 8384 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 }, { A_WAIT, 0 },
-  { 1, 5588 }, { A_WAIT, 0 },
-
+  { 1, 5588 },
   { A_GRAB, 3 }, { A_WEST, 0 }, { A_RELEASE, 0 },
 
   // 4 pipe
@@ -181,8 +177,7 @@ static action_t action_array[] = {
   { 1, 6060 }, { A_DELAY, 250 },
   { 0, 4632 }, { A_WAIT, 0 },
   { 2, 8384 }, { 3, 5424 }, { 4, 7000 }, { 5, 6592 }, { A_WAIT, 0 },
-  { 1, 5688 }, { A_WAIT, 0 },
-
+  { 1, 5688 },
   { A_GRAB, 3 }, { A_WEST, 0 }, { A_RELEASE, 0 },
 
   // 5 pipe
@@ -190,8 +185,7 @@ static action_t action_array[] = {
   { 1, 6060 }, { A_DELAY, 250 },
   { 0, 4300 }, { A_WAIT, 0 },
   { 2, 8248 }, { 3, 5424 }, { 5, 6592 }, { A_WAIT, 0 },
-  { 1, 5328 }, { A_WAIT, 0 },
-
+  { 1, 5328 },
   { A_GRAB, 3 }, { A_WEST, 0 }, { A_RELEASE, 0 },
   
   // Helper position - take TT ball
@@ -368,7 +362,7 @@ void grab(int item) {
 	set_target(5, 3040); // 2140
         break;
     case 2:	// pencil
-	set_target(5, 3550); // 2300
+	set_target(5, 3520); // 2300
         break;
     case 3:	// pipe
         set_target(5, 4850); // 4400
@@ -385,15 +379,17 @@ void bonus(int loc) {
   if (loc == B_LEFT) {
 		// bring to bonus box left
     set_target(1, 6060);
+    adjust_speed(1);
     set_target(2, 5164); // 5184
     set_target(0, 7584);
     wait();
     set_target(3, 3700);
     set_target(4, 7700);
-    set_target(0, 8542); // 8524, 8496
+    set_target(0, 8552); // 8524, 8496
     wait();
-    set_target(1, 5028); // 4968
-    wait();
+    set_target(1, 5048); // 4968
+    release();
+    adjust_speed(2);
   }
   else if (loc == B_RIGHT) {
   }
@@ -415,13 +411,13 @@ void east() {
 void north() {
                 // bring to North Box
   set_target(1, 6060);
-  set_target(2, 6680);
+  set_target(2, 6660);
   wait();
   set_target(3, 2704);
   set_target(4, 7700);
   set_target(0, 7620); // 7624
   wait();
-  set_target(1, 5128); // 5028
+  set_target(1, 5168); // 5028
 }
 
 void west() {
@@ -434,7 +430,7 @@ void west() {
   set_target(0, 9124);
   wait();
   set_target(2, 7684);
-  set_target(1, 5878); // 5848
+  set_target(1, 5898); // 5848
 }
 
 void startup() {
