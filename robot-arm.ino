@@ -17,6 +17,9 @@ typedef struct action {
 #define A_DELAY         30      // pos is used to spec the millis to delay
 #define A_SPEED         31      // pos is used as value,
                                 // 1 - slow, 2 - faster
+#define A_START         32
+#define A_TOP           33
+
 #define B_LEFT		1
 #define B_RIGHT		2
 
@@ -26,13 +29,44 @@ static action_t action_array[] = {
   { A_WAIT, 0 },
   
   { A_SPEED, 2 },
-
+  // Move to the start position
+  { A_START, 0 },
+/*
+  // Drop the helper ring
+  { 0, 7400 }, { 2, 7300 }, { 3, 5908 }, { 1, 5160 }, { A_WAIT, 0 },
+  { A_RELEASE, 0 }, { A_SPEED, 2 },
+  
+  // 1. TT Ball
+  { 1, 6060 }, { 0, 8480 }, { 2, 8140 }, { 3, 5424 }, { A_WAIT, 0 },
+  { 1, 5648 }, { A_WAIT, 0 },
+  { A_GRAB, 4 }, { A_WEST, 0 }, { A_RELEASE, 0 },
+  
+  // 2. TT Ball
+  { 1, 6060 }, {0, 7912 }, { 2, 8384 }, { 3, 5424 }, { A_WAIT, 0 },
+  { 1, 5760 }, { A_WAIT, 0 },
+  { A_GRAB, 4 }, { A_NORTH, 0 }, { A_RELEASE, 0 },
+  
+  // 3. TT Ball
+  { 1, 6060 }, {0, 7200 }, { 2, 8384 }, { 3, 5424 }, { A_WAIT, 0 },
+  { 1, 5784 }, { A_WAIT, 0 },
+  { A_GRAB, 4 }, { A_EAST, 0 }, { A_RELEASE, 0 },
+  
+  // 4. TT Ball
+  { 1, 6060 }, {0, 6712 }, { 2, 8140 }, { 3, 5424 }, { A_WAIT, 0 },
+  { 1, 5648 }, { A_WAIT, 0 },
+  { A_GRAB, 4 },
+  
+  // Helper position
+  { 1, 6060 }, {0, 7504 }, { 2, 7120 }, { 3, 5424 }, { A_WAIT, 0 },
+  { 1, 5040 }, { A_WAIT, 0 },
+  { A_RELEASE, 0 },
+  
   // 3 nail
   // position
-  { 0, 7584 }, { 2, 8384 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 }, { A_WAIT, 0 },
+  { 1, 6060 }, { 0, 7584 }, { 2, 8384 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 }, { A_WAIT, 0 },
   { 1, 5560 }, { A_WAIT, 0 },
   
-  { A_GRAB, 1 }, { A_SPEED, 1 }, { A_BONUS, 0 }, { A_RELEASE, 0}, { A_SPEED, 2 }, 
+  { A_GRAB, 1 }, { A_SPEED, 1 }, { A_BONUS, 0 }, { A_RELEASE, 0 }, { A_SPEED, 2 }, 
   
   // 3 pencil
   // position
@@ -50,7 +84,7 @@ static action_t action_array[] = {
   { 1, 5608 }, { A_WAIT, 0 },
 
   { A_GRAB, 3 }, { A_SPEED, 1 }, { A_BONUS, 0 }, { A_RELEASE, 0}, { A_SPEED, 2 },
-
+*/
   // 1 nail
   // position
   { 1, 6060 }, { 2, 7000 }, { A_DELAY, 250 },
@@ -86,7 +120,7 @@ static action_t action_array[] = {
   // 1 pencil
   // position
   { 1, 6060 }, { 2, 6680 }, { A_DELAY, 250 },
-  { 0, 10712 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 }, { A_WAIT, 0 },
+  { 0, 10700 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 }, { A_WAIT, 0 },
   { 2, 8048 }, { 1, 5408 }, { A_WAIT, 0 },
 
   { A_GRAB, 2 }, { A_NORTH, 0 }, { A_RELEASE, 0},
@@ -103,8 +137,8 @@ static action_t action_array[] = {
   // 4 pencil
   // position
   { 1, 6060 }, { 2, 6680 }, { A_DELAY, 250 },
-  { 0, 9368 }, { 3, 5424 }, { 4, 7000 }, { 5, 6592 }, { A_WAIT, 0 },
-  { 2, 8384 }, { A_WAIT, 0 },
+  { 0, 9500 }, { 3, 5424 }, { 4, 7000 }, { 5, 6592 }, { A_WAIT, 0 },
+  { 2, 8384 }, { 0, 9368 }, { A_WAIT, 0 },
   { 1, 5608 }, { A_WAIT, 0 },
 
   { A_GRAB, 2 },
@@ -133,7 +167,7 @@ static action_t action_array[] = {
 
   // 2 pipe
   // position
-  { 1, 6060 }, { A_DELAY, 250 },
+  { 2, 8000 }, { 1, 6060 }, { A_DELAY, 250 },
   { 0, 5700 }, { 2, 8384 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 }, { A_WAIT, 0 },
   { 1, 5588 }, { A_WAIT, 0 },
 
@@ -146,7 +180,7 @@ static action_t action_array[] = {
   { 2, 8384 }, { 3, 5424 }, { 4, 7000 }, { 5, 6592 }, { A_WAIT, 0 },
   { 1, 5688 }, { A_WAIT, 0 },
 
-  { A_GRAB, 3 }, { A_WEST, 0 }, { A_RELEASE, 0},
+  { A_GRAB, 3 }, { A_WEST, 0 }, { A_RELEASE, 0 },
 
   // 5 pipe
   // position
@@ -155,8 +189,18 @@ static action_t action_array[] = {
   { 2, 8248 }, { 3, 5424 }, { 5, 6592 }, { A_WAIT, 0 },
   { 1, 5328 }, { A_WAIT, 0 },
 
-  { A_GRAB, 3 }, { A_WEST, 0 }, { A_RELEASE, 0},
+  { A_GRAB, 3 }, { A_WEST, 0 }, { A_RELEASE, 0 },
   
+  // Helper position - take TT ball
+  { 1, 6060 }, {0, 7504 }, { 2, 7120 }, { 3, 5424 }, { A_WAIT, 0 },
+  { 1, 5040 }, { A_WAIT, 0 },
+  { A_GRAB, 4 },
+
+  { A_TOP, 0 },
+  // Done;-)
+  
+  { A_RELEASE, 0 },
+  { 2, 8000 }, { 1, 6060 }, { A_DELAY, 250 },
   { A_PARK, 0},
   
   { A_END, 0 },
@@ -167,16 +211,16 @@ static unsigned long start_time;
 static int index = 0;
 
 void setup() {
-  pinMode(7,OUTPUT);
-  pinMode(7,HIGH);
+  pinMode(7, OUTPUT);
+  pinMode(7, HIGH);
   delay(500);
-  pinMode(7,LOW);
+  pinMode(7, LOW);
   
   Serial.begin(115200);
   Serial1.begin(115200);
   delay(1000);
 
-  readInput();
+  readInput("Please enter a char to move to the start position");
   
   // Initial park position
   set_accel(5, 150); set_speed(5, 150);
@@ -223,6 +267,12 @@ void loop() {
           break;
       case A_SPEED:
           adjust_speed(action_array[index].pos);
+          break;
+      case A_START:
+          startup();
+          break;
+      case A_TOP:
+          top();
           break;
       case A_WAIT:
           wait();
@@ -284,6 +334,7 @@ void wait() {
   delay(250);
   Serial.print("Waited ");
   Serial.println(millis() - start_time);
+  readInput("Enter a char to continue");
 }
 
 void park() {
@@ -310,15 +361,16 @@ void grab(int item) {
   
   switch (item) {
     case 1:	// nail
-	set_target(5, 2140);
+	set_target(5, 3040);
         break;
     case 2:	// pencil
-	set_target(5, 2300);
+	set_target(5, 3550);
         break;
     case 3:	// pipe
-        set_target(5, 4400);
+        set_target(5, 4850);
         break;
     case 4:	// TT ball
+        set_target(5, 3300);
         break;
   }
   
@@ -330,12 +382,13 @@ void bonus(int loc) {
 		// bring to bonus box left
     set_target(1, 6060);
     set_target(2, 5164); // 5184
+    set_target(0, 7584);
     wait();
     set_target(3, 3700);
     set_target(4, 7700);
-    set_target(0, 8532); // 8524, 8496
+    set_target(0, 8542); // 8524, 8496
     wait();
-    set_target(1, 4968);
+    set_target(1, 5028); // 4968
     wait();
   }
   else if (loc == B_RIGHT) {
@@ -352,7 +405,7 @@ void east() {
   set_target(0, 6088);
   set_target(2, 7684);
   wait();
-  set_target(1, 5848);
+  set_target(1, 5878); // 5848
 }
 
 void north() {
@@ -364,7 +417,7 @@ void north() {
   set_target(4, 7700);
   set_target(0, 7620); // 7624
   wait();
-  set_target(1, 5028);
+  set_target(1, 5128); // 5028
 }
 
 void west() {
@@ -377,7 +430,36 @@ void west() {
   set_target(0, 9124);
   wait();
   set_target(2, 7684);
-  set_target(1, 5848);
+  set_target(1, 5878); // 5848
+}
+
+void startup() {
+               // bring the robot into the start position
+  set_target(0, 7504);
+  set_target(1, 6200);
+  set_target(2, 2440);
+  set_target(3, 4400);
+  wait();
+  
+  readInput("Enter a char to grab the little helper ring");
+  grab(1);
+  readInput("============= Enter a char to start the run!!! =====================");
+  start_time = millis();
+}
+
+void top() {
+               // bring the robot into the start position
+  set_target(0, 7504);
+  set_target(1, 6200);
+  set_target(2, 2440);
+  set_target(3, 4400);
+  wait();
+  
+  Serial.println("======================== Done!! =========================");
+  Serial.print("time taken= ");
+  Serial.println(millis() - start_time);
+  
+  readInput("Enter a char to go back to park");
 }
 
 void set_target(unsigned char servo, unsigned int target) {
@@ -424,10 +506,14 @@ void adjust_speed(unsigned int target) {
   }        
 }
 
-void readInput() {
+void readInput(const char *str) {
   int incomingByte;
+
+  if (ended > 0) {
+    return;
+  }
   
-  Serial.println("Hit enter to continue");
+  Serial.println("test");
 
   while (Serial.available() == 0) {
     delay(100);
