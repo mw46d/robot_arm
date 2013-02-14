@@ -129,9 +129,9 @@ static action_t action_array[] = {
 
   // 4 pencil
   // position
-  { 0, 9700 }, { 3, 5424 }, { 4, 7000 }, { 5, 6592 }, { A_WAIT, 0 },
+  { 3, 5424 }, { 2, 8048 }, { A_WAIT, 0 },
+  { 0, 9368 }, { 4, 7000 }, { 5, 6592 }, { A_WAIT, 0 },
   { 2, 8384 }, { A_DELAY, 250 },
-  { 0, 9368 }, { A_WAIT, 0 },
   { 1, 5608 },
   { A_GRAB, 2 },
   { 4, 2500 }, { 1, 6060 }, { 0, 9700 }, { A_WAIT, 0 },
@@ -178,7 +178,7 @@ static action_t action_array[] = {
   
   // Helper position - take TT ball
   { 0, 7504 }, { 2, 7120 }, { 3, 5424 }, { A_WAIT, 0 },
-  { 1, 5060 }, { A_WAIT, 0 },
+  { 1, 5080 }, { A_WAIT, 0 },
   { A_GRAB, 4 },
 
   { A_TOP, 0 },
@@ -197,6 +197,8 @@ static unsigned long start_time;
 static int index = 0;
 
 void setup() {
+  int inChar;
+
   pinMode(7,OUTPUT);
   pinMode(7,HIGH);
   delay(500);
@@ -206,7 +208,9 @@ void setup() {
   Serial1.begin(115200);
   delay(1000);
 
-  readInput("Please enter a char to move to the start position");
+  do {
+    inChar = readInput("Please enter a `s' char to move into the start position: ");
+  } while (inChar != 83 && inChar != 115);
   
   // Initial park position
   set_accel(5, 150); set_speed(5, 150);
@@ -395,7 +399,7 @@ void east() {
   set_target(0, 6088);
   set_target(2, 7684);
   wait();
-  set_target(1, 5918); // 5848
+  set_target(1, 5930); // 5848
   release();
   set_target(1, 6060);
   set_target(2, 6680);
@@ -405,14 +409,13 @@ void east() {
 void north() {
                 // bring to North Box
   set_target(1, 6060);
-  set_target(2, 8000);
+  set_target(2, 6660);
   wait();
-  set_target(0, 7680); // 7624
   set_target(3, 2704);
   set_target(4, 7700);
+  set_target(0, 7680); // 7624
   wait();
-  set_target(2, 6610); // 6630
-  set_target(1, 5188); // 5028
+  set_target(1, 5168); // 5028
   release();
   set_target(1, 6060);
   set_target(2, 6400);
@@ -437,6 +440,7 @@ void west() {
 }
 
 void startup() {
+  int inChar;
                // bring the robot into the start position
   set_target(0, 7504);
   set_target(1, 6200);
@@ -444,8 +448,11 @@ void startup() {
   set_target(3, 4400);
   set_target(5, 6592);
   wait();
-  
-  readInput("Enter a char to grab helper");
+ 
+  do { 
+    inChar = readInput("Enter a 'g' char to grab helper: ");
+  } while (inChar != 71 && inChar != 103);
+
   grab(1);
   readInput("=== Enter a char to start! ===");
   start_time = millis();
@@ -510,11 +517,11 @@ void adjust_speed(unsigned int target) {
   }        
 }
 
-void readInput(const char *str) {
+int readInput(const char *str) {
   int incomingByte;
 
   if (ended > 0) {
-    return;
+    return 0;
   }
   
   if (str != NULL) {
@@ -541,4 +548,6 @@ void readInput(const char *str) {
     ended = 1;
     park();
   }
+
+  return incomingByte;
 }
