@@ -1,3 +1,17 @@
+#include <stdarg.h>
+
+void serprintf(char *format, ...) {
+  char buff[256];
+  va_list args;
+
+  va_start(args, format);
+  vsnprintf(buff, sizeof(buff), format, args);
+  va_end(args);
+
+  buff[sizeof(buff) - 1] = '\0';
+  Serial.print(buff);
+}
+
 typedef struct action {
   int target;
   int pos;
@@ -178,7 +192,7 @@ static action_t action_array[] = {
   
   // Helper position - take TT ball
   { 0, 7504 }, { 2, 7120 }, { 3, 5424 }, { A_WAIT, 0 },
-  { 1, 5080 }, { A_WAIT, 0 },
+  { 1, 5100 }, { A_WAIT, 0 },
   { A_GRAB, 4 },
 
   { A_TOP, 0 },
@@ -211,7 +225,7 @@ void setup() {
 
   do {
     inChar = readInput("Please enter a `s' char to move into the start position: ");
-  } while (inChar != 83 && inChar != 115);
+  } while (inChar != 'S' && inChar != 's');
   
   // Initial park position
   set_accel(5, 150); set_speed(5, 150);
@@ -282,10 +296,9 @@ void loop() {
       int incomingByte = Serial.read();
 
                 // say what you got:
-      Serial.print("I received: ");
-      Serial.println(incomingByte, DEC);
+      serprintf("I received: %c\n", (char)incomingByte);
   
-      if (incomingByte == 80 || incomingByte == 112) {
+      if (incomingByte == 'P' || incomingByte == 'p') {
         ended = 1;
         park();
       }
@@ -293,8 +306,7 @@ void loop() {
   }
   
   if (start_time != 0) {
-    Serial.print("time taken= ");
-    Serial.println(millis() - start_time);
+    serprintf("time taken= %lu\n", millis() - start_time);
     
     start_time = 0;
   }
@@ -304,9 +316,7 @@ void wait() {
   int ret;
   unsigned long start_time = millis();
   
-  Serial.print("In wait (");
-  Serial.print(index);
-  Serial.print(") ... ");
+  serprintf("In wait (%d) ... ", index);
   
   do {
     Serial1.write(0xAA);
@@ -323,9 +333,7 @@ void wait() {
   } while (ret);
   
   delay(250);
-  Serial.print("Waited ");
-  Serial.println(millis() - start_time);
-//  readInput("Enter a char to continue");
+  serprintf("Waited %lu\n", millis() - start_time);
 }
 
 void park() {
@@ -344,7 +352,7 @@ void park() {
 void release() {
   wait();
   set_target(5, 6592);
-  wait();
+  delay(250);
 }
 
 void grab(int item) {
@@ -384,7 +392,7 @@ void bonus() {
     set_target(2, 5112); // 5184
     set_target(1, 5092); // 4968
   }
-  else if (loc == B_NE) {
+  else if (bonusBox == B_NE) {
     set_target(0, 6840);
     wait();
     set_target(2, 5112);
@@ -423,7 +431,7 @@ void north() {
   set_target(3, 2704);
   set_target(4, 6400);
   wait();
-  set_target(2, 6620)
+  set_target(2, 6620);
   set_target(1, 5248); // 5028
   release();
   set_target(1, 6060);
@@ -455,13 +463,13 @@ void startup() {
                // Where is the bonus box?
   do { 
     inChar = readInput("Where is the bonus box? (East (`e') or West (`w')? ");
-  } while (inChar != 69 && inChar != 87 && inChar != 101 && inChar != 119);
+  } while (inChar != 'E' && inChar != 'W' && inChar != 'e' && inChar != 'w');
 
-  if (inChar == 69 || inChar == 101) {
+  if (inChar == 'E' || inChar == 'e') {
     bonusBox = B_NE;
   }
   else  {
-    bonusBox == B_NW;
+    bonusBox = B_NW;
   }
                // bring the robot into the start position
   set_target(0, 7504);
@@ -473,7 +481,7 @@ void startup() {
  
   do { 
     inChar = readInput("Enter a 'g' char to grab helper: ");
-  } while (inChar != 71 && inChar != 103);
+  } while (inChar != 'G' && inChar != 'g');
 
   grab(1);
   readInput("=== Enter a char to start! ===");
@@ -488,9 +496,8 @@ void top() {
   set_target(3, 4400);
   wait();
   
-  Serial.println("=== Done! ===");
-  Serial.print("time taken= ");
-  Serial.println(millis() - start_time);
+  serprintf("=== Done! ===\n");
+  serprintf("time taken= %lu\n", millis() - start_time);
   
   readInput("Enter a char to go back to park");
 }
@@ -562,11 +569,10 @@ int readInput(const char *str) {
     incomingByte = Serial.read();
 
                 // say what you got:
-    Serial.print("I received: ");
-    Serial.println(incomingByte, DEC);
+    serprintf("I received: %c\n", (char)incomingByte);
   }
   
-  if (incomingByte == 80 || incomingByte == 112) {
+  if (incomingByte == 'P' || incomingByte == 'p') {
     ended = 1;
     park();
   }
