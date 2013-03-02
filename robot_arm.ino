@@ -17,23 +17,36 @@ typedef struct action {
   int pos;
 } action_t;
 
-#define A_WAIT		20
-#define A_RELEASE	21
+				// Special/combined target values
+				// Target values < 20 will translate
+				// directly into servo channels on
+				// the Maestro
+#define A_WAIT		20	// Wait until the Maestro reports
+				// all servos made it to their desired
+				// position (Input PWM value, not
+				// neccessary physical position!!) waits
+				// an extra 250 millisecs.
+#define A_RELEASE	21	// Release/Open the gripper
 #define A_GRAB		22	// pos is used as marker for the item,
 				// 1 - nail, 2 - pencil, 3 - pipe, 4 - TT ball
-#define A_BONUS		23
-#define A_NORTH		24
+#define A_BONUS		23	// Go to the bonus box & release (target
+				// box is input at runtime)
+#define A_NORTH		24	// Go to North box & release
 #define A_WEST		25
 #define A_EAST		26
-#define A_PARK		27
-#define A_END		28
-#define A_INPUT         29
-#define A_DELAY         30      // pos is used to spec the millis to delay
-#define A_SPEED         31      // pos is used as value,
+#define A_BALL		27	// Go to the temp ball storage, pos is used
+				// 0 - release, 1 - grab
+#define A_PARK		28	// Go to the park position
+#define A_END		29	// End of run
+#define A_DELAY         30      // Delay the Arduino progress to let the
+				// servos catch up. pos is used as delay
+				// in millisecs
+#define A_SPEED         31      // Speed switch, pos is used as value,
                                 // 1 - slow, 2 - faster
-#define A_START         32
-#define A_TOP           33
+#define A_START         32	// Do the start steps
+#define A_TOP           33	// Make as tall as possible
 
+				// Bonus box locations
 #define B_NW		1
 #define B_NE		2
 
@@ -47,43 +60,35 @@ static action_t action_array[] = {
   // Move to the start position
   { A_START, 0 },
 
-  // Drop the helper ring
-  { 0, 7400 }, { 2, 7300 }, { 3, 5908 }, { A_WAIT, 0 },
-  { 1, 5200 },
-  { A_RELEASE, 0 }, { A_SPEED, 2 }, 
-  { 1, 6060 }, { A_WAIT, 0 },
-  
   // 1. TT Ball
-  { 1, 6060 }, { 0, 8400 }, { 3, 6148 }, {4, 8916 }, { A_WAIT, 0 },
+  { 1, 6060 }, { 2, 7500 }, { A_WAIT, 0 },
+  { 0, 8400 }, { A_WAIT, 0 },
+  { 3, 6148 }, {4, 8916 }, { A_WAIT, 0 },
   { 1, 5480 }, { 2, 7920 }, 
-  { A_GRAB, 4 }, { A_WEST, 0 },
+  { A_GRAB, 4 }, { A_BALL, 0 },
   
   // 2. TT Ball
-  { 0, 7912 }, { 3, 5424 }, { A_DELAY, 250 },
-  { 2, 8384 }, { A_WAIT, 0 },
+  { 0, 7912 }, { A_WAIT, 0 },
+  { 3, 5424 }, { 2, 8384 }, { A_WAIT, 0 },
   { 1, 5780 },
-  { A_GRAB, 4 }, { A_NORTH, 0 },
+  { A_GRAB, 4 }, { A_WEST, 0 },
   
   // 3. TT Ball
-  { 0, 7200 }, { 2, 8384 }, { 3, 5424 }, { A_WAIT, 0 },
+  { 0, 7200 }, { A_WAIT, 0 },
+  { 2, 8384 }, { 3, 5424 }, { A_WAIT, 0 },
   { 1, 5804 },
-  { A_GRAB, 4 }, { A_EAST, 0 },
+  { A_GRAB, 4 }, { A_NORTH, 0 },
   
   // 4. TT Ball
   { 0, 6800 }, { A_WAIT, 0 },
   { 3, 5424 }, { 4, 6360 }, { 2, 8140 }, { A_WAIT, 0 },
   { 1, 5668 },
-  { A_GRAB, 4 },
-  
-  // Helper position
-  { 1, 6060 }, {0, 7504 }, { 2, 7120 }, { 3, 5424 }, { A_WAIT, 0 },
-  { 1, 5060 },
-  { A_RELEASE, 0 },
-  { 1, 6060 }, { A_WAIT, 0 },
-  
+  { A_GRAB, 4 }, { A_EAST, 0 },
+
   // 3 nail
   // position
-  { 1, 6060 }, { 0, 7584 }, { 2, 8384 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 }, { A_WAIT, 0 },
+  { 1, 6060 }, { 0, 7584 }, { 2, 8384 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 },
+  { A_WAIT, 0 },
   { 1, 5560 },
   { A_GRAB, 1 }, { A_BONUS, 0 }, 
   
@@ -105,25 +110,29 @@ static action_t action_array[] = {
 
   // 1 nail
   // position
-  { 0, 8610 }, { 2, 8048 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 }, { A_WAIT, 0 },
+  { 0, 8610 }, { 2, 8048 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 },
+  { A_WAIT, 0 },
   { 1, 5368 },
   { A_GRAB, 1 }, { A_EAST, 0 },
   
   // 2 nail
   // position
-  { 0, 8140 }, { 2, 8384 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 }, { A_WAIT, 0 },
+  { 0, 8140 }, { 2, 8384 }, { 3, 5424 }, { 4, 7700 }, { 5, 6592 },
+  { A_WAIT, 0 },
   { 1, 5560 },
   { A_GRAB, 1 }, { A_EAST, 0 },
   
   // 4 nail
   // position
-  { 0, 6984 }, { 3, 5424 }, { 4, 7700 }, { 2, 8384 }, { 5, 6592 }, { A_WAIT, 0 },
+  { 0, 6984 }, { 3, 5424 }, { 4, 7700 }, { 2, 8384 }, { 5, 6592 },
+  { A_WAIT, 0 },
   { 1, 5560 },
   { A_GRAB, 1 }, { A_EAST, 0 },
   
   // 5 nail
   // position
-  { 0, 6664 }, { 3, 5424 }, { 4, 7700 }, { 2, 8048 }, { 5, 6592 }, { A_WAIT, 0 },
+  { 0, 6664 }, { 3, 5424 }, { 4, 7700 }, { 2, 8048 }, { 5, 6592 },
+  { A_WAIT, 0 },
   { 1, 5288 },
   { A_GRAB, 1 }, { A_EAST, 0 },
 
@@ -162,7 +171,8 @@ static action_t action_array[] = {
 
   // 1 pipe
   // position
-  { 0, 6088 }, { 2, 8048 }, { 3, 5424 }, { 4, 8000 }, { 5, 6592 }, { A_WAIT, 0 },
+  { 0, 6088 }, { 2, 8048 }, { 3, 5424 }, { 4, 8000 }, { 5, 6592 },
+  { A_WAIT, 0 },
   { 1, 5248 },
   { A_GRAB, 3 },
   { 1, 6060 }, { A_WAIT, 0 },
@@ -190,12 +200,9 @@ static action_t action_array[] = {
   { 1, 5640 },
   { A_GRAB, 3 }, { A_WEST, 0 },
   
-  // Helper position - take TT ball
-  { 0, 7504 }, { 2, 7120 }, { 3, 5424 }, { A_WAIT, 0 },
-  { 1, 5100 }, { A_WAIT, 0 },
-  { A_GRAB, 4 },
+  // Grab the TT ball
+  { A_BALL, 1 }, { A_TOP, 0 },
 
-  { A_TOP, 0 },
   // Done;-)
   
   { A_RELEASE, 0 },
@@ -249,8 +256,11 @@ void setup() {
 void loop() {
   while (action_array[index].target != A_END && ended == 0) {
     switch (action_array[index].target) {
+      case A_BALL:
+          ball(action_array[index].pos);
+          break;
       case A_BONUS:
-          bonus();
+          bonus(action_array[index].pos);
           break;
       case A_DELAY:
           delay(action_array[index].pos);
@@ -339,7 +349,7 @@ void wait() {
 void park() {
   set_target(1, 6060);
   wait();
-  // Initial park position
+                // Initial park position
   set_target(0, 6360);
   set_target(2, 8384);
   set_target(3, 8664);
@@ -347,6 +357,11 @@ void park() {
   set_target(5, 2048);
   wait();
   set_target(1, 4848);
+  wait();
+  delay(1000);
+                // Start over
+  ended = 0;
+  index = 0;
 }
 
 void release() {
@@ -363,7 +378,7 @@ void grab(int item) {
 	set_target(5, 3040); // 2140
         break;
     case 2:	// pencil
-	set_target(5, 3500); // 2300
+	set_target(5, 3450); // 2300
         break;
     case 3:	// pipe
         set_target(5, 4820); // 4400
@@ -376,32 +391,33 @@ void grab(int item) {
   wait();
 }
 
-void bonus() {
+void bonus(int i) {
   set_target(1, 6208);
   set_target(2, 4000);
   set_target(3, 3700);
   set_target(4, 7700);
   set_target(0, 7584);
-  wait();
+
+  delay(250);
   adjust_speed(1);
 
   if (bonusBox == B_NW) {
-		// bring to bonus box left
+                // bring to bonus box left
     set_target(0, 8540); // 8524, 8496
     wait();
-    set_target(2, 5112); // 5184
+    set_target(2, 5100); // 5184
     set_target(1, 5092); // 4968
   }
   else if (bonusBox == B_NE) {
     set_target(0, 6840);
     wait();
-    set_target(2, 5112);
+    set_target(2, 5100);
     set_target(1, 5100);
   }
 
   release();
   adjust_speed(2);
-  set_target(1, 6060);
+  set_target(1, 6208);
   delay(250);
 }
 
@@ -425,9 +441,10 @@ void east() {
 void north() {
                 // bring to North Box
   set_target(1, 6208);
-  set_target(2, 4000);
+  set_target(2, 6400);
   wait();
-  set_target(0, 7680); // 7624
+  set_target(0, 7688); // 7624
+  wait();
   set_target(3, 2704);
   set_target(4, 6400);
   wait();
@@ -457,6 +474,32 @@ void west() {
   delay(250);
 }
 
+void ball(int i) {
+                // Bring to Ball storage
+  set_target(1, 6060);
+  set_target(2, 6680);
+  wait();
+  set_target(3, 5600);
+  set_target(4, 7700);
+  set_target(0, 8852);
+  wait();
+  set_target(2, 8384);
+  set_target(1, 6068);
+
+  if (i == 0) {
+                // Release the ball
+    release();
+    set_target(1, 6208);
+    delay(250);
+    set_target(2, 7500);
+    delay(250);
+  }
+  else if (i == 1) {
+                // Grab the ball again
+    grab(4);
+  }
+}
+
 void startup() {
   int inChar;
 
@@ -472,18 +515,13 @@ void startup() {
     bonusBox = B_NW;
   }
                // bring the robot into the start position
-  set_target(0, 7504);
+  set_target(0, 8852);
   set_target(1, 6200);
   set_target(2, 2440);
   set_target(3, 4400);
   set_target(5, 6592);
   wait();
  
-  do { 
-    inChar = readInput("Enter a 'g' char to grab helper: ");
-  } while (inChar != 'G' && inChar != 'g');
-
-  grab(1);
   readInput("=== Enter a char to start! ===");
   start_time = millis();
 }
