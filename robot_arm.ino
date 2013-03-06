@@ -176,7 +176,7 @@ static action_t action_array[] = {
   { 1, 5248 },
   { A_GRAB, 3 },
   { 1, 6060 }, { A_WAIT, 0 },
-  { 4, 4000 }, { 0, 7000}, { A_WAIT, 0 },
+  { 4, 4000 }, { 0, 7000}, { A_DELAY, 400 },
   { A_WEST, 0 },
 
   // 2 pipe
@@ -477,12 +477,24 @@ void west() {
 void ball(int i) {
                 // Bring to Ball storage
   set_target(1, 6060);
-  set_target(2, 6680);
+
+  if (i == 0) {
+    set_target(2, 7680);
+  }
+  else {
+    set_target(2, 6680);
+  }
+
   wait();
   set_target(3, 5600);
   set_target(4, 7700);
   set_target(0, 8852);
   wait();
+
+  if (i == 1) {
+    adjust_speed(1);
+  }
+
   set_target(2, 8384);
   set_target(1, 6068);
 
@@ -497,6 +509,7 @@ void ball(int i) {
   else if (i == 1) {
                 // Grab the ball again
     grab(4);
+    adjust_speed(2);
   }
 }
 
@@ -515,7 +528,7 @@ void startup() {
     bonusBox = B_NW;
   }
                // bring the robot into the start position
-  set_target(0, 8852);
+  set_target(0, 7852);
   set_target(1, 6200);
   set_target(2, 2440);
   set_target(3, 4400);
